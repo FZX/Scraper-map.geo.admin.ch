@@ -12,7 +12,8 @@ $(document).ready(function(){
 
     function update_data(data) {
         if (data.status === "success"){
-            $("#testt").load("./ #testt");
+            $("#panel-body").load("./ #table");
+            $("#panel-footer").load("./ #footer-row");
             toggle_i_class($("#search"));
             $("#search_text").val("");
         }
@@ -29,8 +30,11 @@ $(document).ready(function(){
 
     $("#search").on("click", function(e){
         e.preventDefault();
-        toggle_i_class(this);
-        post_address(update_data);
+        if ($("#search_text").val().length > 0){
+            console.log("I am here ");
+            toggle_i_class(this);
+            post_address(update_data); 
+        }
 
     });
 

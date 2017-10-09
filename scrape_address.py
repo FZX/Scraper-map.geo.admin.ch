@@ -23,14 +23,18 @@ models.Base.metadata.create_all(engine)
 
 
 def get_feature_id(address):
-    search_link = "https://api3.geo.admin.ch/1710041248/rest/services/ech/" \
-        "SearchServer?searchText={search_text}&lang=en&type=featuresearch&" \
-        "bbox=746901.61,250960.6,747243.11,251032.6&features="\
-        "ch.bfs.gebaeude_wohnungs_register&timeEnabled=" \
-        "false&timeStamps=".format(search_text=address)
-    respond = requests.get(search_link)
-    feature_id = respond.json()["results"][0]["attrs"]["feature_id"]
-    return feature_id
+    try:
+        search_link = "https://api3.geo.admin.ch/1710041248/rest/services/ech/" \
+            "SearchServer?searchText={search_text}&lang=en&type=featuresearch&" \
+            "bbox=746901.61,250960.6,747243.11,251032.6&features="\
+            "ch.bfs.gebaeude_wohnungs_register&timeEnabled=" \
+            "false&timeStamps=".format(search_text=address)
+        respond = requests.get(search_link)
+        feature_id = respond.json()["results"][0]["attrs"]["feature_id"]
+        return feature_id
+    except:
+        pass
+        
 
 
 def get_popup(place_id):
@@ -172,7 +176,6 @@ def index():
 
 @route("/check_address", method="POST")
 def check_address():
-    print("I am here")
     address = request.forms.keyword
     if address:
         data = table_parser(get_popup(get_feature_id(address)))
@@ -214,4 +217,4 @@ def static_js(filepath):
 
 
 if __name__ == '__main__':
-    run(host="localhost", port=8080, debug=True, reloader=True)
+    run(host="0.0.0.0", port=8080, debug=True, reloader=True)
