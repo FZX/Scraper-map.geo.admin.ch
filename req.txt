@@ -1,0 +1,5 @@
+requests
+sqlalchemy
+sb4
+xlsxwriter
+bottle

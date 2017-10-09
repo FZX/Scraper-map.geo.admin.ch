@@ -1,0 +1,108 @@
+%include("./templates/header.html")
+    <br>
+
+%setdefault("search", "")
+<div id="page-wrapper">
+<div class="container-fluid">
+
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-md-offset-1 col-sm-offset-1">
+        <form>
+            <div class="input-group custom-search-form">
+                <input type="text" class="form-control" name="search" id="search_text" value="{{search}}" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button id="search" class="btn btn-default" type="sumbit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<!-- ./search row -->
+
+<div class="row">
+<div class="col-lg-11 col-md-offset-1">
+
+            <div class="panel panel-default panel-table">
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col col-xs-6">
+                    <h3 class="panel-title">Already Scraped</h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <table id="testt" class="table table-striped table-bordered table-list table-hover">
+                  <thead>
+                    <tr>
+                        <th class="hidden-xs">ID</th>
+                        <th>EGID</th>
+                        <th>Street</th>
+                        <th>Nr.</th>
+                        <th>Zip</th>
+                        <th>PLZ6</th>
+                        <th>Location</th>
+                        <th>City</th>
+                        <th>BFS-Nummer</th>
+                        <th>Created Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      %for value in data:
+                                <tr>
+                                <td class="hidden-xs"><b>{{value.id}}</b></td>
+                                <td>{{value.egid}}</td>
+                                <td>{{value.street}}</td>
+                                <td>{{value.nr}}</td>
+                                <td>{{value.zip_code}}</td>
+                                <td>{{value.plz}}</td>
+                                <td>{{value.location}}</td>
+                                <td>{{value.city}}</td>
+                                <td>{{value.bfs_number}}</td>
+                                <td>{{str(value.created_on)[:-7]}}</td>
+                                </tr>
+                        %end
+                        </tbody>
+                </table>
+              </div>
+              <div class="panel-footer">
+                  <div class="row">
+                      <div class="col col-xs-12">
+                          Export:
+            <div class="btn-group pagination">
+                  <a href="/export/data.xlsx" role="button" class="btn btn-default">Excel</a>
+                  <a href="/export/data.csv" role="button" class="btn btn-default">Csv</a>
+                  <a href="/export/data.json" role="button" class="btn btn-default">Json</a>
+            </div>
+                          <ul class="pagination hidden-xs pull-right">
+                              %if pages:
+                              %if current_page == 1:
+                              <li><a><span class="glyphicon glyphicon-backward"></span></a></li>
+                              %else:
+                              <li><a href="/?page={{current_page -1}}"><span class="glyphicon glyphicon-backward"></span></a></li>
+                              %end
+                              %for i in paginated:
+                              %active = "active" if i == current_page else ""
+                              <li class="{{active}}"><a href="/?page={{i}}">{{i}}</a>
+                                %end
+                                %if current_page == pages:
+                                <li><a><span class="glyphicon glyphicon-forward"></span></a></li>
+                                %else:
+                                <li><a href="/?page={{current_page + 1}}"><span class="glyphicon glyphicon-forward"></span></a></li>
+                                %end
+                                %end
+                          </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <a class="btn btn-default" role="button" href="/export/data.xlsx" download>Excel Download</a>
+</div>
+</div>
+</div>
+</div>
+
+%include("./templates/footer.html")
